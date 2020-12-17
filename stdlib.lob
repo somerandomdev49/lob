@@ -1,9 +1,9 @@
-id = { (a) a };
+id = { |a| a };
 
 MAX_NUMBER = __py_exec__("import sys; __res = sys.float_info.max");
 MIN_NUMBER = __py_exec__("import sys; __res = sys.float_info.min");
 
-min = { (l)
+min = { |l|
     m = MAX_NUMBER;
     for i(l) (
         if i < m
@@ -11,10 +11,20 @@ min = { (l)
     ); m
 };
 
-max = { (l)
+max = { |l|
     m = MIN_NUMBER;
     for i(l) (
         if i > m
             m = i
     ); m
+};
+
+sum = { |l|
+    s = 0;
+    for i(l) s = s + i;
+    s
+};
+
+avg = { |l|
+    sum(l) / len(l)
 }

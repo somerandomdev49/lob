@@ -36,6 +36,8 @@ operator_map = {
     'Mod': lambda x, y: x % y,
     'Pow': lambda x, y: x ** y,
     'Same': lambda x, y: x == y,
+    'Or': lambda x, y: x or y,
+    'And': lambda x, y: x and y,
     'Less': lambda x, y: x < y,
     'Greater': lambda x, y: x > y,
 }
@@ -132,12 +134,14 @@ class Parser:
 
         if self.peek()[0] == 'OpenCurly':
             self.next()
-            args = self.parse_arguments(True)
+            x = self.peek()[0] == 'Or'
+            args = None
+            if x: args = self.parse_arguments(True, 'Or', 'Or')
             v = self.parse_stmts()
             if self.peek()[0] != 'CloseCurly':
                 raise LangError(self, "Expected '}'")
             self.next()
-            return ('Func', v, args)
+            return ('Func', v, args) if x else v
 
         elif self.peek()[0] == 'Num':
             return self.next()
@@ -241,7 +245,14 @@ class Parser:
             if self.peek()[0] != 'Var':
                 raise LangError(self, "Expected a name")
             self.next()
-            return(('Import', n))
+            x = None
+            if self.peek()[1] == 'as':
+                self.next()
+                x = self.peek()[1]
+                if self.peek()[0] != 'Var':
+                    raise LangError(self, "Expected a name")
+                self.next()
+            return ('Import', n, x)
         elif self.peek()[1] == 'if':
             self.next()
             e = self.parse_expr()
@@ -250,7 +261,7 @@ class Parser:
             if self.peek()[1] == 'else':
                 self.next()
                 k = self.parse_expr()
-            return(('If', e, v, k))
+            return ('If', e, v, k)
         elif self.peek()[1] == 'for':
             self.next()
 
@@ -272,7 +283,7 @@ class Parser:
 
             x = self.parse_expr()
             
-            return (('For', n, v, x))
+            return ('For', n, v, x)
         else:
             return self.parse_assign()
         
@@ -307,12 +318,15 @@ class Eval:
         if self.parent is not None: return name in self.parent
         return False
     
-    def import_module(self, name):
+    def import_module(self, name, alias=None):
+        _name = name
+        if alias is not None:
+            name = alias
         if name in self.c:
-            raise LangError(None, "Cannot import module" + name +
+            raise LangError(None, "Cannot import module as " + name +
                 ": there is already a variable the same name.")
         evl = Eval(self)
-        run_file(name + ".lob", evl)
+        run_file(_name + ".lob", evl)
         self.c[name] = evl.c
     
     def eval_node(self, n):
@@ -336,7 +350,7 @@ class Eval:
             self[n[1]] = self.eval_node(n[2])
             return self[n[1]]
         if n[0] == 'Import':
-            return self.import_module(n[1])
+            return self.import_module(n[1], n[2])
         if n[0] == 'If':
             evl = Eval(self)
             return evl.eval_node(n[2]) if\
@@ -379,6 +393,7 @@ class StdEval(Eval):
             'eval': lambda x: run_expr(x, self),
             'clear': clear,
             'import': self.import_module,
+            'len': len,
             '__py_exec__': self.py_exec
         }
     
