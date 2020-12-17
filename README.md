@@ -3,6 +3,33 @@ not an acronym, just something.
 
 `main2.py` is the main file, `main.py` is just me experimenting.
 
+## Example:
+```c++
+
+id = { (a) a };
+
+MAX_NUMBER = __py_exec__("import sys; __res = sys.float_info.max");
+MIN_NUMBER = __py_exec__("import sys; __res = sys.float_info.min");
+
+min = { (l)
+    m = MAX_NUMBER;
+    for i(l) (
+        if i < m
+            m = i
+    ); m
+};
+
+max = { (l)
+    m = MIN_NUMBER;
+    for i(l) (
+        if i > m
+            m = i
+    ); m
+}
+
+
+```
+
 ## Syntax:
 
 ### Operators:
