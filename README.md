@@ -16,5 +16,17 @@ Function expression: `{ (a, b, c, ...) ... }`
 List: `[ ..., ..., ... ]`
 
 ### Modules
-Import: `import ...`
+Import: `import name` (imports `./name.lob` into `name` variable)
+> TODO
+> Import as: `import name as alias` (imports `./name.lob` into `alias` variable)
+
+### Variables
 Access: `name.a.b.c.d`
+Assign / Define: `name = ...`
+
+### For loop:
+For loop: `for item(list) ...`
+
+### If:
+If: `if ... ... `
+If else: `if ... ... else ...`
