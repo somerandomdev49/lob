@@ -1,0 +1,20 @@
+id = { (a) a };
+
+MAX_NUMBER = __py_exec__("import sys; __res = sys.float_info.max");
+MIN_NUMBER = __py_exec__("import sys; __res = sys.float_info.min");
+
+min = { (l)
+    m = MAX_NUMBER;
+    for i(l) (
+        if i < m
+            m = i
+    ); m
+};
+
+max = { (l)
+    m = MIN_NUMBER;
+    for i(l) (
+        if i > m
+            m = i
+    ); m
+}
