@@ -236,7 +236,7 @@ class Parser:
             self.next()
             o = ("Assign", o[1], self.parse_equality())
         return o
-    
+        
     def parse_expr(self):
         o = []
         if self.peek()[1] == 'import':
@@ -297,7 +297,7 @@ class Parser:
 class Eval:
     def __init__(self, parent = None):
         self.parent = parent
-        self.c = {}
+        self.c = {'__unpack__': self.unpack}
     
     def __getitem__(self, name):
         if name in self.c:
@@ -328,6 +328,14 @@ class Eval:
         evl = Eval(self)
         run_file(_name + ".lob", evl)
         self.c[name] = evl.c
+    
+    def unpack(self, obj):
+        if type(obj) is dict:
+            for k in dir(obj):
+                self.c[k] = obj[k]
+        else:
+            for k in dir(obj):
+                self.c[k] = getattr(obj, k)
     
     def eval_node(self, n):
         if n is None: return None
@@ -394,7 +402,8 @@ class StdEval(Eval):
             'clear': clear,
             'import': self.import_module,
             'len': len,
-            '__py_exec__': self.py_exec
+            '__py_exec__': self.py_exec,
+            
         }
     
     def py_exec(self, s):
@@ -428,3 +437,4 @@ while True:
         if x: print('❯ ' + str(run_expr(x, evl)))
     except LangError as e:
         print("⌀ Error:", e)
+

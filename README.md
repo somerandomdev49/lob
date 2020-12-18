@@ -5,34 +5,14 @@ not an acronym, just something.
 
 ## Example:
 ```ruby
-id = { |a| a };
+import math;
+a = float(input());
+b = float(input());
+c = float(input());
 
-min = { |l|
-    m = MAX_NUMBER;
-    for i(l) (
-        if i < m
-            m = i
-    ); m
-};
+p = (a + b + c) / 2;
 
-max = { |l|
-    m = MIN_NUMBER;
-    for i(l) (
-        if i > m
-            m = i
-    ); m
-};
-
-sum = { |l|
-    s = 0;
-    for i(l) s = s + i;
-    s
-};
-
-avg = { |l|
-    sum(l) / len(l)
-}
-
+print(math.sqrt(p * (p - a) * (p - b) * (p - c)))
 ```
 
 ## Syntax:
