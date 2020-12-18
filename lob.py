@@ -1,4 +1,6 @@
 
+import argparse
+import readline
 class LangError(Exception):
     def __init__(self, e, msg):
         if e is None:
@@ -432,7 +434,6 @@ def run_file(s, e):
 
 evl = Eval(StdEval())
 
-import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('-i, --interactive', help='Run REPL', action='store_true', dest='interactive')
 parser.add_argument('f', nargs='?', metavar='file', help='file to run')
@@ -447,3 +448,4 @@ if args.interactive:
             print("⌀ Error:", e)
 else:
     run_file(args.f, evl)
+
