@@ -6,3 +6,37 @@ c = float(input());
 p = (a + b + c) / 2;
 
 print(math.sqrt(p * (p - a) * (p - b) * (p - c)))
+
+;"
+
+imported{math;};
+local{a;b;c;p;};
+----------------
+getlocal{input;}; call{1};
+getlocal{float;}; call{1};
+setlocal{a;};
+
+getlocal{input;}; call{1};
+getlocal{float;}; call{1};
+setlocal{b;};
+
+getlocal{input;}; call{1};
+getlocal{float;}; call{1};
+setlocal{c;};
+
+getlocal{c;};
+getlocal{a;};
+getlocal{b;};
+add{};
+add{};
+number{2};
+div{};
+
+... p * (p - a) * (p - b) * (p - c)
+
+getlocal{math};
+getfield{sqrt};
+call{1};
+getlocal{print};
+call{1};
+;"
