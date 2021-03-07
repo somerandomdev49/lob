@@ -1,7 +1,7 @@
 # Lob
 not an acronym, just something.
 
-`main2.py` is the main file, `main.py` is just me experimenting.
+`lob.py` is the main file
 
 ## Example:
 ```ruby
